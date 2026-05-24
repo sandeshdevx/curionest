@@ -3,6 +3,7 @@ import HabitCard from './HabitCard';
 import Heatmap from './Heatmap';
 
 export default function Dashboard({ user, onLogout }) {
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
   const [habits, setHabits] = useState([]);
   const [habitLogs, setHabitLogs] = useState([]);
   const [showAddHabitModal, setShowAddHabitModal] = useState(false);
@@ -23,7 +24,7 @@ export default function Dashboard({ user, onLogout }) {
 
   const fetchHabits = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/habits/user/${user.id}`);
+      const res = await fetch(`${API_BASE}/api/habits/user/${user.id}`);
       if (res.ok) {
         const data = await res.json();
         setHabits(data);
@@ -35,7 +36,7 @@ export default function Dashboard({ user, onLogout }) {
 
   const fetchLogs = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/habits/user/${user.id}/logs`);
+      const res = await fetch(`${API_BASE}/api/habits/user/${user.id}/logs`);
       if (res.ok) {
         const data = await res.json();
         setHabitLogs(data);
@@ -48,7 +49,7 @@ export default function Dashboard({ user, onLogout }) {
   const handleAddHabit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8080/api/habits/', {
+      const res = await fetch(`${API_BASE}/api/habits/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -75,7 +76,7 @@ export default function Dashboard({ user, onLogout }) {
 
   const handleComplete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/habits/${id}/complete`, { method: 'POST' });
+      const res = await fetch(`${API_BASE}/api/habits/${id}/complete`, { method: 'POST' });
       if (res.ok) {
         fetchHabits();
         fetchLogs();
@@ -87,7 +88,7 @@ export default function Dashboard({ user, onLogout }) {
 
   const handleFail = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/habits/${id}/fail`, { method: 'POST' });
+      const res = await fetch(`${API_BASE}/api/habits/${id}/fail`, { method: 'POST' });
       if (res.ok) {
         const message = await res.text();
         console.log(message);

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 export default function Login({ onLogin }) {
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +14,7 @@ export default function Login({ onLogin }) {
     setLoading(true);
     setError('');
 
-    const url = isRegistering ? 'http://localhost:8080/api/auth/register' : 'http://localhost:8080/api/auth/login';
+    const url = isRegistering ? `${API_BASE}/api/auth/register` : `${API_BASE}/api/auth/login`;
     const body = isRegistering 
       ? { email, password, username, firstName: username } 
       : { email, password };
